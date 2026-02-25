@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Запрет индексации поисковиками -->
+    <meta name="robots" content="noindex, nofollow">
+    <title>Юлия Каскова | Психолог, Таролог, Энерголог</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+
+        :root {
+            --bg-deep: #05070a;
+            --accent-purple: #7c3aed;
+            --accent-blue: #3b82f6;
+            --accent-pink: #d946ef;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-deep);
+            color: #f8fafc;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* --- Глубокий Интерактивный Фон --- */
+        .bg-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: var(--bg-deep);
+            overflow: hidden;
+        }
+
+        /* Зернистость */
+        .bg-wrapper::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            pointer-events: none;
+        }
+
+        #energyCanvas {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            mix-blend-mode: screen;
+        }
+
+        .blob {
+            position: absolute;
+            filter: blur(120px);
+            border-radius: 50%;
+            opacity: 0.18;
+            mix-blend-mode: screen;
+            animation: move-organic 30s infinite alternate ease-in-out;
+            transition: transform 0.3s ease-out;
+        }
+
+        .blob-1 { width: 900px; height: 900px; background: var(--accent-purple); top: -10%; left: -10%; }
+        .blob-2 { width: 800px; height: 800px; background: var(--accent-blue); top: 20%; right: -15%; animation-duration: 35s; animation-delay: -5s; }
+        .blob-3 { width: 700px; height: 700px; background: var(--accent-pink); bottom: -15%; left: 10%; animation-duration: 25s; animation-delay: -10s; }
+
+        @keyframes move-organic {
+            0% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            50% { transform: translate(15%, 10%) rotate(180deg) scale(1.1); }
+            100% { transform: translate(-10%, 20%) rotate(360deg) scale(0.95); }
+        }
+
+        /* --- Интерфейс --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.015);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .glass-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            transform: translateY(-12px);
+            border-color: rgba(124, 58, 237, 0.4);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            filter: blur(10px);
+            transition: all 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+            filter: blur(0);
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            position: relative;
+            z-index: 1;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.6s;
+        }
+
+        .cta-button:hover::before { left: 100%; }
+        .cta-button:hover { transform: scale(1.05) translateY(-2px); box-shadow: 0 0 40px rgba(124, 58, 237, 0.6); }
+
+        .announcement-bar {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+            color: rgba(255, 255, 255, 0.4);
+            padding: 14px;
+            text-align: center;
+            font-size: 0.65rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .fab-contact {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .fab-item {
+            width: 64px; height: 64px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .fab-item::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.1);
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.4); opacity: 0; }
+        }
+
+        .fab-item:hover { transform: scale(1.15) rotate(10deg); }
+        .fab-whatsapp { background: #25d366; }
+        .fab-telegram { background: #0088cc; }
+
+        @media (max-width: 768px) {
+            .fab-contact { bottom: 20px; right: 20px; }
+            .blob { width: 500px; height: 500px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Живой Фон -->
+    <div class="bg-wrapper">
+        <canvas id="energyCanvas"></canvas>
+        <div class="blob blob-1" id="b1"></div>
+        <div class="blob blob-2" id="b2"></div>
+        <div class="blob blob-3" id="b3"></div>
+    </div>
+
+    <div class="announcement-bar">
+        Concept Design • Julia Kaskova • 2026 • Private Preview
+    </div>
+
+    <!-- Связь -->
+    <div class="fab-contact">
+        <a href="https://wa.me/79025241991" target="_blank" class="fab-item fab-whatsapp">
+            <i class="fa-brands fa-whatsapp text-3xl"></i>
+        </a>
+        <a href="https://t.me/yuliya_kaskova" target="_blank" class="fab-item fab-telegram">
+            <i class="fa-brands fa-telegram text-3xl"></i>
+        </a>
+    </div>
+
+    <!-- Навигация -->
+    <nav class="fixed w-full z-50 px-10 py-6 backdrop-blur-xl border-b border-white/5 top-[48px]">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex flex-col">
+                <span class="text-3xl font-serif font-bold tracking-tighter">ЮЛИЯ КАСКОВА</span>
+                <span class="text-[10px] uppercase tracking-[0.5em] text-purple-400 font-semibold">Психоанализ & Энергия</span>
+            </div>
+            <div class="hidden lg:flex space-x-14 text-[11px] uppercase tracking-widest font-medium opacity-70">
+                <a href="#about" class="hover:text-purple-400 transition-colors">Методология</a>
+                <a href="#services" class="hover:text-purple-400 transition-colors">Практики</a>
+                <a href="#contact" class="hover:text-purple-400 transition-colors">Запись</a>
+            </div>
+            <a href="https://t.me/yuliya_kaskova" target="_blank" class="text-white/40 hover:text-white transition">
+                <i class="fa-brands fa-telegram text-2xl"></i>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="min-h-screen flex items-center justify-center px-6 pt-40 pb-20 relative">
+        <div class="max-w-7xl w-full grid lg:grid-cols-2 gap-20 items-center">
+            <div class="space-y-12">
+                <div class="reveal active">
+                    <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-purple-500/20 bg-purple-500/5 text-purple-300 text-[11px] uppercase tracking-[0.3em] font-bold">
+                        <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
+                        10+ лет глубокой практики
+                    </div>
+                </div>
+                <h1 class="text-8xl md:text-[10rem] leading-[0.85] tracking-tighter reveal active" style="transition-delay: 0.1s">
+                    Познай <br>
+                    <span class="italic text-purple-400 font-light">истину</span>
+                </h1>
+                <p class="text-2xl text-slate-400 max-w-xl leading-relaxed reveal active" style="transition-delay: 0.2s">
+                    Гармония разума и душевной энергии. Клинический подход, усиленный пониманием тонких структур сознания.
+                </p>
+                <div class="flex flex-wrap gap-8 pt-8 reveal active" style="transition-delay: 0.3s">
+                    <a href="#contact" class="cta-button px-14 py-6 rounded-full font-bold text-xs uppercase tracking-[0.2em] shadow-2xl">
+                        Начать путь
+                    </a>
+                    <a href="https://t.me/tarokaas" target="_blank" class="px-14 py-6 rounded-full border border-white/10 hover:bg-white/5 transition flex items-center gap-4 text-xs uppercase tracking-[0.2em] backdrop-blur-md">
+                        <i class="fa-brands fa-telegram text-2xl"></i> Taro Kaas
+                    </a>
+                </div>
+            </div>
+
+            <div class="relative flex justify-center reveal active" style="transition-delay: 0.4s">
+                <div class="w-80 h-[480px] md:w-[450px] md:h-[650px] rounded-[80px] border border-white/10 shadow-2xl rotate-2 hover:rotate-0 transition-all duration-1000 bg-white/5 flex items-center justify-center p-16 text-center relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-purple-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+                    <span class="text-slate-500 font-serif italic text-2xl md:text-3xl relative z-10 opacity-60">Здесь будет ваше <br>портретное фото</span>
+                </div>
+                <div class="absolute -bottom-12 -left-12 glass-card p-12 rounded-[50px] border border-white/10 max-w-[320px] z-10 shadow-2xl">
+                    <i class="fa-solid fa-quote-left text-purple-500/20 text-5xl mb-6"></i>
+                    <p class="text-base italic text-slate-300 leading-relaxed">"Психоанализ — это не просто терапия, это возвращение к своей истинной природе через символы и энергию."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Методы -->
+    <section id="about" class="py-40 px-6">
+        <div class="max-w-6xl mx-auto text-center reveal">
+            <h2 class="text-6xl mb-24 italic tracking-tight font-light">Три столпа осознанности</h2>
+            <div class="grid md:grid-cols-3 gap-12 text-left">
+                <div class="glass-card p-14 rounded-[60px]">
+                    <div class="text-purple-500 mb-10 font-serif text-5xl italic opacity-40">01.</div>
+                    <h3 class="text-3xl mb-6 font-bold">Разум</h3>
+                    <p class="text-lg text-slate-400 leading-relaxed font-light">Клиническая психология для расшифровки сценариев вашего бессознательного.</p>
+                </div>
+                <div class="glass-card p-14 rounded-[60px]">
+                    <div class="text-blue-500 mb-10 font-serif text-5xl italic opacity-40">02.</div>
+                    <h3 class="text-3xl mb-6 font-bold">Символ</h3>
+                    <p class="text-lg text-slate-400 leading-relaxed font-light">Таро-анализ как инструмент работы с архетипами и коллективным полем.</p>
+                </div>
+                <div class="glass-card p-14 rounded-[60px]">
+                    <div class="text-purple-300 mb-10 font-serif text-5xl italic opacity-40">03.</div>
+                    <h3 class="text-3xl mb-6 font-bold">Энергия</h3>
+                    <p class="text-lg text-slate-400 leading-relaxed font-light">Гармонизация биополя и чистка пространств для притока новой жизни.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Услуги -->
+    <section id="services" class="py-40 px-6 bg-white/[0.005]">
+        <div class="max-w-7xl mx-auto">
+            <div class="flex flex-col lg:flex-row justify-between items-end mb-24 reveal">
+                <h2 class="text-6xl md:text-8xl max-w-2xl tracking-tighter leading-none">Практики <br>перехода</h2>
+                <p class="text-slate-500 max-w-sm mt-10 lg:mt-0 italic text-lg leading-relaxed">Индивидуальные стратегии трансформации: от исцеления души до квантового роста.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-12">
+                <!-- 1 -->
+                <div class="glass-card p-14 rounded-[70px] flex flex-col justify-between reveal">
+                    <div>
+                        <div class="w-16 h-16 rounded-3xl bg-purple-500/10 flex items-center justify-center mb-12">
+                            <i class="fa-solid fa-brain text-3xl text-purple-400"></i>
+                        </div>
+                        <h3 class="text-3xl mb-6 font-bold italic">Терапия</h3>
+                        <p class="text-slate-400 leading-relaxed mb-12 text-base font-light">Глубинная проработка кризисов и поиск вечных внутренних опор.</p>
+                    </div>
+                    <a href="https://wa.me/79025241991" class="text-purple-400 hover:text-purple-300 font-bold text-xs uppercase tracking-[0.3em] flex items-center gap-4 transition-all group">
+                        Записаться <i class="fa-solid fa-arrow-right-long transition-transform group-hover:translate-x-3"></i>
+                    </a>
+                </div>
+                <!-- 2 -->
+                <div class="glass-card p-14 rounded-[70px] flex flex-col justify-between reveal" style="transition-delay: 0.1s">
+                    <div>
+                        <div class="w-16 h-16 rounded-3xl bg-blue-500/10 flex items-center justify-center mb-12">
+                            <i class="fa-solid fa-sparkles text-3xl text-blue-400"></i>
+                        </div>
+                        <h3 class="text-3xl mb-6 font-bold italic">Прогноз</h3>
+                        <p class="text-slate-400 leading-relaxed mb-12 text-base font-light">Расклады на предназначение и анализ отношений в текущем поле.</p>
+                    </div>
+                    <a href="https://wa.me/79025241991" class="text-blue-400 hover:text-blue-300 font-bold text-xs uppercase tracking-[0.3em] flex items-center gap-4 transition-all group">
+                        Узнать <i class="fa-solid fa-arrow-right-long transition-transform group-hover:translate-x-3"></i>
+                    </a>
+                </div>
+                <!-- 3 -->
+                <div class="glass-card p-14 rounded-[70px] flex flex-col justify-between reveal" style="transition-delay: 0.2s">
+                    <div>
+                        <div class="w-16 h-16 rounded-3xl bg-purple-300/10 flex items-center justify-center mb-12">
+                            <i class="fa-solid fa-bolt-lightning text-3xl text-purple-300"></i>
+                        </div>
+                        <h3 class="text-3xl mb-6 font-bold italic">Энергия</h3>
+                        <p class="text-slate-400 leading-relaxed mb-12 text-base font-light">Полная чистка биополя и восстановление ресурсного потенциала.</p>
+                    </div>
+                    <a href="https://wa.me/79025241991" class="text-purple-300 hover:text-purple-200 font-bold text-xs uppercase tracking-[0.3em] flex items-center gap-4 transition-all group">
+                        Войти <i class="fa-solid fa-arrow-right-long transition-transform group-hover:translate-x-3"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Подкаст -->
+    <section class="py-40 px-6">
+        <div class="max-w-7xl mx-auto glass-card rounded-[100px] p-20 lg:p-32 relative overflow-hidden group">
+            <div class="absolute inset-0 bg-purple-600/[0.03] opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+            <div class="grid lg:grid-cols-2 gap-24 items-center relative z-10">
+                <div class="reveal">
+                    <span class="text-purple-400 uppercase tracking-[0.5em] text-[10px] font-bold mb-8 block">Voice of Truth</span>
+                    <h2 class="text-6xl md:text-8xl mb-12 italic tracking-tighter leading-none">«Докопаться <br>до истины»</h2>
+                    <p class="text-2xl text-slate-300 mb-14 leading-relaxed font-light">
+                        Авторский проект Юлии Каськовой о смыслах, которые скрыты за гранью обыденного восприятия.
+                    </p>
+                    <a href="#" class="inline-block bg-white text-black px-16 py-6 rounded-full font-bold text-xs uppercase tracking-widest hover:bg-slate-200 transition shadow-2xl">Слушать выпуски</a>
+                </div>
+                <div class="flex justify-center reveal">
+                    <div class="relative">
+                        <div class="w-72 h-72 md:w-96 md:h-96 bg-gradient-to-tr from-purple-600/80 to-blue-600/80 rounded-full flex items-center justify-center shadow-[0_0_80px_rgba(124,58,237,0.4)] relative z-10">
+                            <i class="fa-solid fa-microphone text-8xl text-white"></i>
+                        </div>
+                        <div class="absolute -inset-10 border border-white/5 rounded-full animate-ping"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <footer id="contact" class="py-40 px-6 border-t border-white/5 relative">
+        <div class="max-w-6xl mx-auto text-center">
+            <h2 class="text-7xl md:text-[9rem] mb-24 tracking-tighter reveal">Время <br><span class="italic text-purple-500 font-light">перемен</span></h2>
+            
+            <div class="grid md:grid-cols-2 gap-10 mb-24 reveal">
+                <a href="https://wa.me/79025241991" class="glass-card p-14 rounded-[50px] flex items-center justify-center gap-8 group transition-all">
+                    <i class="fa-brands fa-whatsapp text-5xl text-green-400 group-hover:scale-110 transition"></i>
+                    <div class="text-left">
+                        <div class="text-[10px] uppercase tracking-widest text-slate-500 mb-2">Direct Contact</div>
+                        <div class="text-3xl font-bold font-serif">WhatsApp</div>
+                    </div>
+                </a>
+                <a href="https://t.me/yuliya_kaskova" class="glass-card p-14 rounded-[50px] flex items-center justify-center gap-8 group transition-all">
+                    <i class="fa-brands fa-telegram text-5xl text-blue-400 group-hover:scale-110 transition"></i>
+                    <div class="text-left">
+                        <div class="text-[10px] uppercase tracking-widest text-slate-500 mb-2">Direct Contact</div>
+                        <div class="text-3xl font-bold font-serif">Telegram</div>
+                    </div>
+                </a>
+            </div>
+
+            <p class="text-[11px] uppercase tracking-[0.6em] text-slate-700 reveal mt-32">© 2026 ЮЛИЯ КАСКОВА • CLINICAL PSYCHOLOGY • ENERGY WORK</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Энергетический Фон (Canvas) ---
+        const canvas = document.getElementById('energyCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null };
+
+        function initCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            particles = [];
+            const count = (canvas.width * canvas.height) / 15000;
+            for(let i=0; i<count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    size: Math.random() * 2 + 0.5,
+                    vx: (Math.random() - 0.5) * 0.3,
+                    vy: (Math.random() - 0.5) * 0.3,
+                    opacity: Math.random() * 0.4 + 0.1
+                });
+            }
+        }
+
+        function drawParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if(p.x < 0) p.x = canvas.width;
+                if(p.x > canvas.width) p.x = 0;
+                if(p.y < 0) p.y = canvas.height;
+                if(p.y > canvas.height) p.y = 0;
+
+                // Взаимодействие с мышью
+                if(mouse.x !== null) {
+                    let dx = mouse.x - p.x;
+                    let dy = mouse.y - p.y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    if(dist < 200) {
+                        p.x -= dx * 0.005;
+                        p.y -= dy * 0.005;
+                    }
+                }
+
+                ctx.fillStyle = `rgba(167, 139, 250, ${p.opacity})`;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            requestAnimationFrame(drawParticles);
+        }
+
+        // --- Параллакс Сфер ---
+        function parallaxBlobs(e) {
+            const blobs = [document.getElementById('b1'), document.getElementById('b2'), document.getElementById('b3')];
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+            
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            blobs.forEach((b, i) => {
+                const speed = (i + 1) * 35;
+                const shiftX = (x - 0.5) * speed;
+                const shiftY = (y - 0.5) * speed;
+                b.style.transform = `translate(${shiftX}px, ${shiftY}px)`;
+            });
+        }
+
+        // --- Scroll Reveal ---
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            reveals.forEach(el => {
+                const top = el.getBoundingClientRect().top;
+                if (top < window.innerHeight - 150) el.classList.add("active");
+            });
+        }
+
+        window.addEventListener("scroll", reveal);
+        window.addEventListener("mousemove", parallaxBlobs);
+        window.addEventListener("resize", initCanvas);
+        
+        window.onload = () => { 
+            initCanvas(); 
+            drawParticles(); 
+            reveal(); 
+        }
+    </script>
+</body>
+</html>
